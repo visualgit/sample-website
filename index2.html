@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Simple Blog</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins:wght@600&display=swap" rel="stylesheet" />
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+  <style>
+    :root {
+      --color-bg-light: #f4f4f4;
+      --color-text-light: #333;
+      --color-bg-dark: #121212;
+      --color-text-dark: #e0e0e0;
+      --color-primary: #6200ee;
+      --color-card-bg-light: #fff;
+      --color-card-bg-dark: #1e1e1e;
+      --transition-speed: 0.3s;
+    }
+
+    /* Base styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+      background-color: var(--color-bg-light);
+      color: var(--color-text-light);
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+      padding: 0;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Dark mode styles */
+    body.dark {
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-dark);
+    }
+
+    header {
+      background: var(--color-primary);
+      color: white;
+      padding: 20px 20px 20px 40px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 2rem;
+      flex-grow: 1;
+      text-align: left;
+      color: white;
+    }
+
+    /* Dark mode toggle container */
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      color: white;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .material-icons {
+      font-size: 24px;
+      transition: color var(--transition-speed);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 0 20px 40px;
+      flex-grow: 1;
+    }
+
+    .posts {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .blog-post {
+      background: var(--color-card-bg-light);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow var(--transition-speed), background-color var(--transition-speed);
+    }
+
+    body.dark .blog-post {
+      background: var(--color-card-bg-dark);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.6);
+    }
+
+    .blog-post:hover {
+      box-shadow: 0 5px 20px rgba(98, 0, 238, 0.4);
+    }
+
+    .blog-post img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      object-fit: cover;
+      filter: brightness(1);
+      transition: filter var(--transition-speed);
+    }
+
+    body.dark .blog-post img {
+      filter: brightness(0.8);
+    }
+
+    .blog-post h2 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: inherit;
+      font-size: 1.75rem;
+    }
+
+    .blog-post small {
+      color: #888;
+      margin-bottom: 15px;
+      display: block;
+      font-size: 0.9rem;
+      transition: color var(--transition-speed);
+    }
+
+    body.dark .blog-post small {
+      color: #bbb;
+    }
+
+    .blog-post p {
+      font-size: 1rem;
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    footer {
+      background: var(--color-primary);
+      color: white;
+      text-align: center;
+      padding: 15px 20px;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    /* Responsive two column on wide */
+    @media (min-width: 700px) {
+      .posts {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .blog-post {
+        flex: 1 1 calc(50% - 20px);
+        max-width: calc(50% - 20px);
+      }
+    }
+
+    @media (max-width: 400px) {
+      header h1 {
+        font-size: 1.4rem;
+      }
+      .blog-post h2 {
+        font-size: 1.3rem;
+      }
+      .blog-post p {
+        font-size: 0.95rem;
+      }
+    }
+
+    /* Toggle Switch Styles */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #6200ee;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My Simple Blog</h1>
+
+    <label class="toggle-container" for="darkModeToggle" title="Toggle Dark Mode">
+      <span class="material-icons" id="modeIcon">light_mode</span>
+      Dark Mode
+      <div class="switch">
+        <input type="checkbox" id="darkModeToggle" />
+        <span class="slider"></span>
+      </div>
+    </label>
+  </header>
+
+  <main class="container">
+    <div class="posts">
+      <!-- Post 1 -->
+      <article class="blog-post">
+        <img src="https://picsum.photos/800/400?random=1" alt="Blog post image 1" />
+        <h2>Post One: The Beauty of Simplicity</h2>
+        <small>Published on July 25, 2025 by Jane Doe</small>
+        <p>
+          In a world filled with complexity, simplicity is a breath of fresh air.
+          Whether it's in design, code, or everyday life, removing the unnecessary helps
+          us focus on what really matters.
+        </p>
+      </article>
+
+      <!-- Post 2 -->
+      <article class="blog-post">
+        <img src="https://picsum.photos/800/400?random=2" alt="Blog post image 2" />
+        <h2>Post Two: Why I Love CSS</h2>
+        <small>Published on July 27, 2025 by John Smith</small>
+        <p>
+          CSS gives life to HTML. With just a few lines of code, we can turn plain
+          content into a beautiful experience. It's more than styling—it's expression.
+        </p>
+      </article>
+
+      <!-- Post 3 -->
+      <article class="blog-post">
+        <img src="https://picsum.photos/800/400?random=3" alt="Blog post image 3" />
+        <h2>Post Three: Building Websites Without Frameworks</h2>
+        <small>Published on July 29, 2025 by Alex Kim</small>
+        <p>
+          While frameworks are powerful, there's something rewarding about crafting
+          a website from scratch. It teaches you the core of web development and gives you full control.
+        </p>
+      </article>
+
+      <!-- Post 4 -->
+      <article class="blog-post">
+        <img src="https://picsum.photos/800/400?random=4" alt="Blog post image 4" />
+        <h2>Post Four: My Favorite Developer Tools</h2>
+        <small>Published on July 30, 2025 by Sam Lee</small>
+        <p>
+          From VS Code to browser dev tools, every developer has their go-to set of software.
+          In this post, I share mine and why they make my workflow smoother and faster.
+        </p>
+      </article>
+
+      <!-- Post 5 -->
+      <article class="blog-post">
+        <img src="https://picsum.photos/800/400?random=5" alt="Blog post image 5" />
+        <h2>Post Five: Designing for Mobile First</h2>
+        <small>Published on July 31, 2025 by Emma Chan</small>
+        <p>
+          Mobile-first design forces you to think about what's truly essential. 
+          It’s a powerful way to create streamlined, accessible, and responsive user experiences.
+        </p>
+      </article>
+
+      <!-- Post 6 -->
+      <article class="blog-post">
+        <img src="https://picsum.photos/800/400?random=6" alt="Blog post image 6" />
+        <h2>Post Six: Markdown vs WYSIWYG Editors</h2>
+        <small>Published on August 1, 2025 by Rahul Mehta</small>
+        <p>
+          Some prefer raw Markdown, others want rich text editors. We’ll explore the pros
+          and cons of both approaches and how to choose one for your next project.
+        </p>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 My Simple Blog. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    const icon = document.getElementById('modeIcon');
+
+    // Load saved preference
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      body.classList.add('dark');
+      toggle.checked = true;
+      icon.textContent = 'dark_mode';
+    }
+
+    toggle.addEventListener('change', () => {
+      if (toggle.checked) {
+        body.classList.add('dark');
+        icon.textContent = 'dark_mode';
+        localStorage.setItem('darkMode', 'enabled');
+      } else {
+        body.classList.remove('dark');
+        icon.textContent = 'light_mode';
+        localStorage.setItem('darkMode', 'disabled');
+      }
+    });
+  </script
